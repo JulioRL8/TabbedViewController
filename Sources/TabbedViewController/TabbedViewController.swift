@@ -2,12 +2,12 @@
 #if canImport(UIKit)
 import UIKit
 
-class AndroidTabbedViewController: UIViewController {
+public class TabbedViewController: UIViewController {
     
     @IBOutlet private var pageViewContainer: UIView!
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var header: UIView!
-    override var title: String? {
+    public override var title: String? {
         didSet {
             titleLabel.text = title
         }
@@ -55,7 +55,7 @@ class AndroidTabbedViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
     }
     
