@@ -2,7 +2,7 @@
 #if canImport(UIKit)
 import UIKit
 
-class TabbedViewController: UIViewController {
+class AndroidTabbedViewController: UIViewController {
     
     @IBOutlet private var pageViewContainer: UIView!
     @IBOutlet private var titleLabel: UILabel!
@@ -36,7 +36,6 @@ class TabbedViewController: UIViewController {
                 stackViewPageViewContainer.removeAllArrangedSubviews()
                 stackViewPageViewContainer.addArrangedSubview(pvController.view)
             }
-            
         }
     }
     private var viewControllers = [UIViewController]() {
