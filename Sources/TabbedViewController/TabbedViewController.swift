@@ -38,7 +38,7 @@ public class TabbedViewController: UIViewController {
             }
         }
     }
-    private var viewControllers = [UIViewController]() {
+    public var viewControllers = [UIViewController]() {
         didSet {
             pageViewController = PageViewController(viewControllers: viewControllers)
             navigator = Navigator(viewControllers: viewControllers)
@@ -46,7 +46,7 @@ public class TabbedViewController: UIViewController {
         }
     }
     
-    init(viewControllerList: [UIViewController]) {
+    public init(viewControllerList: [UIViewController]) {
         super.init(nibName: nil, bundle: nil)
         self.viewControllers = viewControllerList
     }
@@ -59,7 +59,7 @@ public class TabbedViewController: UIViewController {
         super.viewDidLoad()
     }
     
-    func setColor(primary: UIColor, secondary: UIColor) {
+    public func setColor(primary: UIColor, secondary: UIColor) {
         self.primaryColor = primary
         self.secondaryColor = secondary
     }
