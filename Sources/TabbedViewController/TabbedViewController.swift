@@ -127,7 +127,7 @@ public class TabbedViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         initializeView()
-        titleLabel.text = title
+        titleLabel?.text = title
         updateColors()
         header.isHidden = !withHeader
         navigatorView.isHidden = !withNav
