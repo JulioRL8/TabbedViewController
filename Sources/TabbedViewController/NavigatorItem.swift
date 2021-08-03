@@ -57,8 +57,9 @@ class NavigatorItem: UIView {
     }
     
     static func create(title: String) -> NavigatorItem? {
-        let nib = Bundle.main.loadNibNamed("NavigatorItem", owner: self, options: nil)
-        let view = nib?.first as? NavigatorItem
+//        let nib = Bundle.main.loadNibNamed("NavigatorItem", owner: self, options: nil)
+//        let view = nib?.first as? NavigatorItem
+        let view = NavigatorItem(coder: NSCoder())
         view?.title = title
         view?.line.isHidden = true
         return view
