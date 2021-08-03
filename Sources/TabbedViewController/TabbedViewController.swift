@@ -179,7 +179,7 @@ public class TabbedViewController: UIViewController {
     }
     
     private func updatePageViewController() {
-        if let pvController = pageViewController {
+        if let pvController = pageViewController, pageViewContainer != nil {
             self.addChild(pvController)
             self.pageViewContainer.addSubview(pvController.view)
             pvController.view.frame = pageViewContainer.bounds
