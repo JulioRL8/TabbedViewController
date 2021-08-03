@@ -112,7 +112,7 @@ public class TabbedViewController: UIViewController {
         self.withHeader = withHeader
         self.withNav = withNavigator
         
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: "TabbedViewController", bundle: Bundle.module)
     }
     
     static public func create(viewControllerList: [UIViewController], withHeader: Bool = true, withNavigator: Bool = true) -> TabbedViewController {
