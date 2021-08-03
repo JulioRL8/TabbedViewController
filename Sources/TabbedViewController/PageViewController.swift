@@ -7,15 +7,15 @@
 import UIKit
 
 protocol PageControlProtocol {
-    func setPage(index: Int)
-    func setPage(vc: UIViewController)
+    func setPage(title: String)
 }
 
 class PageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     private var vcList = [UIViewController]()
+    public var firstIndex = 0
     
-    lazy var viewControllerList:[UIViewController] = {
+    lazy var viewControllerList: [UIViewController] = {
         return vcList
     }()
     
@@ -28,7 +28,11 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
         fatalError("init(coder:) has not been implemented")
     }
     
-    var pageControl: PageControlProtocol?
+    var pageControl: PageControlProtocol? {
+        didSet {
+            pageControl?.setPage(title: vcList[firstIndex].title ?? "")
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,12 +42,9 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
         self.delegate = self
         
         
-        if let firstViewController = viewControllerList[1] as UIViewController? {
+        if let firstViewController = viewControllerList[firstIndex] as UIViewController? {
             self.setViewControllers([firstViewController], direction: .forward, animated: true, completion: nil)
         }
-        
-        self.view.backgroundColor = UIColor(red: 0.73333, green: 0.6941, blue: 0.5607, alpha: 1)
-        // Do any additional setup after loading the view.
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
@@ -87,7 +88,7 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
         
         if let currentVC = pageViewController.viewControllers?.last {
             if let pc = pageControl {
-                pc.setPage(vc: currentVC)
+                pc.setPage(title: currentVC.title ?? "")
             }
         }
     }
@@ -95,7 +96,7 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         
         if let pc = pageControl {
-            pc.setPage(vc: pendingViewControllers[0])
+            pc.setPage(title: pendingViewControllers[0].title ?? "")
         }
     }
     
@@ -113,7 +114,7 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
         }
         
         self.setViewControllers([vcToGo], direction: direction, animated: true, completion: nil)
-        pageControl?.setPage(vc: vcToGo)
+        pageControl?.setPage(title: vcToGo.title ?? "")
     }
     
     func flipToPage(title: String) {

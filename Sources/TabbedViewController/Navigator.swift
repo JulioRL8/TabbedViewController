@@ -16,20 +16,37 @@ protocol NavigatorDelegate {
 
 class Navigator: UIView {
 
-    @IBOutlet private var stackView: UIStackView!
+    @IBOutlet private var stackView: UIStackView! {
+        didSet {
+            updateInfo()
+        }
+    }
     var delegate: NavigatorDelegate?
     
-    private var viewControllerList: [UIViewController] {
+    private var viewControllerList: [UIViewController]? {
         didSet {
-            for vc in viewControllerList {
-                let navigatorItem = NavigatorItem(title: vc.title ?? "")
-                stackView.addArrangedSubview(navigatorItem)
+            updateInfo()
+        }
+    }
+    
+    private func updateInfo() {
+        guard let vcList = viewControllerList,
+              stackView != nil else {
+            return
+        }
+        stackView.removeAllArrangedSubviews()
+        for vc in vcList {
+            let navigatorItem = NavigatorItem.create(title: vc.title ?? "")
+            if let navItem = navigatorItem {
+                navItem.delegate = self
+                stackView.addArrangedSubview(navItem)
             }
         }
     }
     
     var primaryColor: UIColor? {
         didSet {
+            self.backgroundColor = primaryColor
             stackView.subviews.forEach({ view in
                 if let navItem = view as? NavigatorItem,
                    let color = primaryColor {
@@ -50,19 +67,41 @@ class Navigator: UIView {
         }
     }
     
-    init(viewControllers: [UIViewController]) {
-        viewControllerList = viewControllers
-        super.init(frame: CGRect(x: 0, y: 0, width: 1920, height: 1080))
+    static func create(viewControllers: [UIViewController]) -> Navigator? {
+        let nib = Bundle.main.loadNibNamed("Navigator", owner: self, options: nil)
+        let view = nib?.first as? Navigator
+        view?.viewControllerList = viewControllers
+        return view
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+    }
+    
+    private func unselectAllExcept(title: String) {
+        stackView.subviews.forEach({ view in
+            if let navItem = view as? NavigatorItem
+                {
+                if navItem.title != title {
+                    navItem.setSelected(isActive: false)
+                } else {
+                    navItem.setSelected(isActive: true)
+                }
+            }
+        })
     }
 }
 
 extension Navigator: NavigatorItemProtocol {
     func selectedNavigatorItem(title: String) {
+        unselectAllExcept(title: title)
         delegate?.setPage(title: title)
+    }
+}
+
+extension Navigator: PageControlProtocol {
+    func setPage(title: String) {
+        unselectAllExcept(title: title)
     }
 }
 

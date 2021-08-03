@@ -17,43 +17,51 @@ protocol NavigatorItemProtocol {
 class NavigatorItem: UIView {
     @IBOutlet private var button: UIButton!
     @IBOutlet private var line: UIView!
+    var title: String? {
+        didSet {
+            button.setTitle(title, for: .normal)
+        }
+    }
     private var isSelected = false {
         didSet {
-            if isSelected {
-                line.backgroundColor = primaryColor
-                button.setTitleColor(primaryColor, for: .normal)
-            } else {
-                line.backgroundColor = secondaryColor
-                button.setTitleColor(secondaryColor, for: .normal)
-            }
+            updateColors()
         }
     }
     var primaryColor = UIColor.black {
         didSet {
-            if isSelected {
-                line.backgroundColor = primaryColor
-                button.setTitleColor(primaryColor, for: .normal)
-            }
+            updateColors()
         }
     }
     var secondaryColor = UIColor.lightGray {
         didSet {
-            if !isSelected {
-                line.backgroundColor = secondaryColor
-                button.setTitleColor(secondaryColor, for: .normal)
-            }
+            updateColors()
         }
     }
     var delegate: NavigatorItemProtocol?
     
-    
-    init(title: String) {
-        super.init(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: 1920, height: 1080)))
-        button.setTitle(title, for: .normal)
+    private func updateColors() {
+        if isSelected {
+            line.isHidden = false
+            line.backgroundColor = secondaryColor
+            button.setTitleColor(secondaryColor, for: .normal)
+        } else {
+            let inactiveColor = secondaryColor.withAlphaComponent(0.5)
+            line.isHidden = true
+            line.backgroundColor = inactiveColor
+            button.setTitleColor(inactiveColor, for: .normal)
+        }
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
+    }
+    
+    static func create(title: String) -> NavigatorItem? {
+        let nib = Bundle.main.loadNibNamed("NavigatorItem", owner: self, options: nil)
+        let view = nib?.first as? NavigatorItem
+        view?.title = title
+        view?.line.isHidden = true
+        return view
     }
     
     func setSelected(isActive: Bool){
