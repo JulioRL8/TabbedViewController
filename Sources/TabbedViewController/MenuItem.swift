@@ -15,9 +15,9 @@ class MenuItem: UIView {
     @IBOutlet weak var button: UIButton!
     
     static public func create(image: UIImage?, action: UIAction, height: CGFloat = 40.0) -> MenuItem {
-//        let nib = Bundle.main.loadNibNamed("MenuItem", owner: self, options: nil)
-//        let view = nib?.first as? MenuItem
-        let view = MenuItem(coder: NSCoder())
+        let bundle = Bundle(for: self)
+        let nib = bundle.loadNibNamed("MenuItem", owner: self, options: nil)
+        let view = nib?.first as? MenuItem
         view?.titleLabel.setTitle(action.title, for: .normal)
         if image != nil {
             view?.imageView.image = image

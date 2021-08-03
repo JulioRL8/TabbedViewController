@@ -68,9 +68,9 @@ class Navigator: UIView {
     }
     
     static func create(viewControllers: [UIViewController]) -> Navigator? {
-//        let nib = Bundle.main.loadNibNamed("Navigator", owner: self, options: nil)
-//        let view = nib?.first as? Navigator
-        let view = Navigator(coder: NSCoder())
+        let bundle = Bundle(for: self)
+        let nib = bundle.loadNibNamed("Navigator", owner: self, options: nil)
+        let view = nib?.first as? Navigator
         view?.viewControllerList = viewControllers
         return view
     }
