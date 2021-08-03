@@ -24,8 +24,5 @@ let package = Package(
         .target(
             name: "TabbedViewController",
             dependencies: []),
-        .testTarget(
-            name: "TabbedViewControllerTests",
-            dependencies: ["TabbedViewController"]),
     ]
 )
