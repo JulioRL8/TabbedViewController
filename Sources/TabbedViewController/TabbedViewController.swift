@@ -197,7 +197,7 @@ public class TabbedViewController: UIViewController {
     }
     
     private func updateNavigator() {
-        if let nav = navigator {
+        if let nav = navigator, navigatorView != nil {
             nav.translatesAutoresizingMaskIntoConstraints = false
             navigatorView.addSubview(nav)
             nav.trailingAnchor.constraint(equalTo: navigatorView.trailingAnchor).isActive = true
