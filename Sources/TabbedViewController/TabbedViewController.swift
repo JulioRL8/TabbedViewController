@@ -23,6 +23,12 @@ public class TabbedViewController: UIViewController {
     
     @IBOutlet weak var menuStackView: UIStackView!
     
+    public var headerForMenu: UIView? {
+        didSet {
+            updateMenuActions()
+        }
+    }
+    
     private var settingsActions: [UIAction] = [] {
         didSet {
             updateSettingsActions()
@@ -210,6 +216,9 @@ public class TabbedViewController: UIViewController {
     
     private func updateMenuActions() {
         menuStackView?.removeAllArrangedSubviews()
+        if let header = headerForMenu {
+            menuStackView?.addArrangedSubview(header)
+        }
         menuActions.forEach({ action in
             let menuItem = MenuItem.create(image: nil, action: action)
             if let titleColor = menuButtonColor {
